@@ -1,0 +1,85 @@
+<%- include("template/cabecera",{tituloWeb:'Detalles'})%>
+
+    <div class="container">
+        <h1>Detalle Empleado</h1>
+        <% if (error){ %>
+            <p><%= mensaje %></p>
+            <a href="/empleados" class="btn btn-dark btn-block">Volver a Empleados</a>
+        <% } %>
+
+        <% if (!error) { %>
+            <form id="formularioEditar" data-id="<%= empleado.id %>">
+                <input type="text" class="form-control my-2" name="nombre" value="<%= empleado.nombre %>" id="nombreInput">
+                <input type="text" class="form-control my-2" name="apellido" value="<%= empleado.apellido %>" id="apellidoInput">
+
+                <!-- Detalles del Producto -->
+                <h2>Detalles del Producto</h2>
+                <input type="text" class="form-control my-2" name="nombreProducto" value="<%= empleado.producto.nombre %>" id="nombreProducto">
+                <input type="text" class="form-control my-2" name="descripcionProducto" value="<%= empleado.producto.descripcion %>" id="descripcionProducto">
+                <input type="text" class="form-control my-2" name="precioProducto" value="<%= empleado.producto.precio %>" id="precioProducto">
+
+                <button class="btn btn-warning btn-block" type="submit">Editar</button>
+            </form>
+            <hr>
+            <button class="btn btn-danger btn-sm mt-5" id="btnEliminar" data-id="<%= empleado.id %>">
+                Eliminar
+            </button>
+        <% } %>
+    </div>
+
+    <%- include("template/footer")%>
+
+    <script>
+        const btnEliminar = document.querySelector('#btnEliminar');
+        btnEliminar.addEventListener('click', async () => {
+            const id = btnEliminar.dataset.id;
+            try {
+                const data = await fetch(`/empleados/${id}`, {
+                    method: 'delete'
+                });
+                const res = await data.json();
+                if (res.estado) {
+                    window.location.href = '/empleados';
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        });
+
+        const formularioEditar = document.querySelector('#formularioEditar');
+        formularioEditar.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const nombre = formularioEditar.elements['nombre'].value;
+            const apellido = document.querySelector('#apellidoInput').value;
+            const nombreProducto = document.querySelector('#nombreProducto').value;
+            const descripcionProducto = document.querySelector('#descripcionProducto').value;
+            const precioProducto = document.querySelector('#precioProducto').value;
+            const id = formularioEditar.dataset.id;
+
+            try {
+                const data = await fetch(`/empleados/${id}`, {
+                    method: 'put',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        nombre,
+                        apellido,
+                        producto: {
+                            nombre: nombreProducto,
+                            descripcion: descripcionProducto,
+                            precio: precioProducto
+                        }
+                    })
+                });
+                const res = await data.json();
+                if (res.estado) {
+                    window.location.href = '/empleados';
+                } else {
+                    console.log(res);
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        });
+    </script>

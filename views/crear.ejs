@@ -1,0 +1,44 @@
+<%- include("template/cabecera", { tituloWeb: 'Registrar Nuevo Empleado' })%>
+
+<body>
+  <div class="container">
+    <h1>Crear</h1>
+    <form action="/empleados" method="POST">
+      <div class="mb-3">
+        <label for="nombre" class="form-label">Nombre</label>
+        <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Ingrese el nombre" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="apellido" class="form-label">Apellido</label>
+        <input type="text" class="form-control" id="apellido" name="apellido" placeholder="Ingrese el apellido" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="nombreProducto" class="form-label">Nombre del Producto</label>
+        <input type="text" class="form-control" id="nombreProducto" name="nombreProducto" placeholder="Ingrese el nombre del producto" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="descripcion" class="form-label">Descripción</label>
+        <input type="text" class="form-control" id="descripcion" name="descripcion" placeholder="Ingrese la descripción" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="precio" class="form-label">Precio</label>
+        <input type="number" class="form-control" id="precio" name="precio" placeholder="Ingrese el precio" required>
+      </div>
+
+      <button class="btn btn-success btn-block" type="submit">AGREGAR</button>
+    </form>
+  </div>
+  
+  <% if (error) { %>
+    <div class="alert alert-danger mt-3" role="alert">
+        <%= mensaje %>
+    </div>
+<% } %>
+</div>
+
+  <%- include("template/footer")%>
+</body>

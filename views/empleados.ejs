@@ -1,0 +1,52 @@
+<%- include("template/cabecera",{tituloWeb:'Pagina de Inicio'})%>
+
+    <div class="container">
+      <h1>CRUD EMPRESA</h1>
+      <a class="btn btn-success btn-block my-4" href="/empleados/crear">
+        Registrar Nuevo Empleado
+      </a>
+      
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Apellido</th>
+            <th scope="col">Productos</th>
+          </tr>
+        </thead>
+        <tbody>
+            
+          <% if (arrayEmpleado.length > 0) { %>
+            <% arrayEmpleado.forEach(empleado => { %>
+              <tr>
+                <th scope="row"><%= empleado._id %></th>
+                <td><%= empleado.nombre %></td>
+                <td><%= empleado.apellido %></td>
+                <td>
+                  <% if (empleado.productos && empleado.productos.length > 0) { %>
+                    <ul>
+                      <% empleado.productos.forEach(producto => { %>
+                        <li>
+                          <strong>Nombre:</strong> <%= producto.nombre %> |
+                          <strong>Precio:</strong> <%= producto.precio %> |
+                          <strong>Descripción:</strong> <%= producto.descripcion %>
+                        </li>
+                      <% }) %>
+                    </ul>
+                  <% } else { %>
+                    <p>No hay productos registrados.</p>
+                  <% } %>
+                </td>
+                <td>
+                  <a href="/empleados/<%= empleado._id %>" class="btn btn-warning btn-sm">Editar</a>
+                </td>
+              </tr>
+            <% }) %}
+          <% } %>
+          
+          
+        </tbody>
+      </table>
+      
+<%- include("template/footer")%>
